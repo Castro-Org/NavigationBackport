@@ -1,10 +1,14 @@
 import Foundation
-
+import SwiftUI
 public extension Navigator where Screen: NBScreen {
   /// Pushes a new screen via a push navigation.
   /// - Parameter screen: The screen to push.
   func push(_ screen: Screen) {
-    path.push(screen)
+      var transaction = Transaction(animation: nil)
+      transaction.disablesAnimations = true
+    withTransaction(transaction) {
+        path.push(screen)
+    }
   }
 
   /// Pops a given number of screens off the stack.
