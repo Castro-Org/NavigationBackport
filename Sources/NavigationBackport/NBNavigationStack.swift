@@ -33,11 +33,11 @@ public struct NBNavigationStack<Root: View, Data: Hashable>: View {
                 }
             }
             .onChange(of: externalTypedPath) { externalTypedPath in
-                var transaction = Transaction(animation: nil)
-                transaction.disablesAnimations = true
-                withTransaction(transaction) {
-                    path.withDelaysIfUnsupported(\.path) {
-                        $0 = externalTypedPath
+                path.withDelaysIfUnsupported(\.path) { path in
+                    var transaction = Transaction(animation: nil)
+                    transaction.disablesAnimations = true
+                    withTransaction(transaction) {
+                        path = externalTypedPath
                     }
                 }
             }
