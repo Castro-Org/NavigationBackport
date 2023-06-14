@@ -33,8 +33,12 @@ public struct NBNavigationStack<Root: View, Data: Hashable>: View {
                 }
             }
             .onChange(of: externalTypedPath) { externalTypedPath in
-                path.withDelaysIfUnsupported(\.path) {
-                    $0 = externalTypedPath
+                var transaction = Transaction(animation: nil)
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
+                    path.withDelaysIfUnsupported(\.path) {
+                        $0 = externalTypedPath
+                    }
                 }
             }
             .onChange(of: internalTypedPath) { internalTypedPath in
