@@ -1,11 +1,16 @@
 import Foundation
+import SwiftUI
 
 /// Various utilities for pushing and popping.
 public extension Array where Element: NBScreen {
   /// Pushes a new screen.
   /// - Parameter screen: The screen to push.
   mutating func push(_ screen: Element) {
-    append(screen)
+      var transaction = Transaction(animation: nil)
+      transaction.disablesAnimations = true 
+    withTransaction(transaction) {
+        append(screen)
+    }
   }
 
   /// Pops a given number of screens off the stack.
