@@ -33,12 +33,8 @@ public struct NBNavigationStack<Root: View, Data: Hashable>: View {
                 }
             }
             .onChange(of: externalTypedPath) { externalTypedPath in
-                path.withDelaysIfUnsupported(\.path) { path in
-                    var transaction = Transaction(animation: nil)
-                    transaction.disablesAnimations = true
-                    withTransaction(transaction) {
-                        path = externalTypedPath
-                    }
+                path.withDelaysIfUnsupported(\.path) {
+                    $0 = externalTypedPath
                 }
             }
             .onChange(of: internalTypedPath) { internalTypedPath in
@@ -68,6 +64,10 @@ public struct NBNavigationStack<Root: View, Data: Hashable>: View {
                         fatalError("Cannot add \(type(of: anyHashable.base)) to stack of \(Data.self)")
                     }
                 }
+            }
+            .transaction {
+                $0.disablesAnimations = true
+                $0.animation = nil
             }
     }
     
