@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS, deprecated: 16.0, message: "Use SwiftUI's Navigation API beyond iOS 15")
 /// A replacement for SwiftUI's `NavigationStack` that's available on older OS versions.
 public struct NBNavigationStack<Root: View, Data: Hashable>: View {
     @Binding var externalTypedPath: [Data]
@@ -64,10 +63,6 @@ public struct NBNavigationStack<Root: View, Data: Hashable>: View {
                         fatalError("Cannot add \(type(of: anyHashable.base)) to stack of \(Data.self)")
                     }
                 }
-            }
-            .transaction {
-                $0.disablesAnimations = true
-                $0.animation = nil
             }
     }
     
