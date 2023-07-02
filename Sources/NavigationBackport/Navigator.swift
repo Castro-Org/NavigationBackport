@@ -9,7 +9,7 @@ public typealias PathAwareNavigator = EquatableNavigator<AnyHashable>
 /// Supports push and pop operations when `Screen` conforms to `NBScreen`.
 @MainActor
 public class Navigator<Screen>: ObservableObject {
-  let pathBinding: Binding<[Screen]>
+  public let pathBinding: Binding<[Screen]>
 
   /// The current navigation path.
   public var path: [Screen] {
@@ -32,5 +32,21 @@ public class EquatableNavigator<Screen>: ObservableObject where Screen: Equatabl
                 self.objectWillChange.send()
             }
         }
+    }
+}
+
+
+extension Binding: Equatable where Value == [AnyHashable] {
+    public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
+    }
+    
+    public mutating func append(_ element: Value.Element) {
+        var current = wrappedValue
+        current.append(element)
+        wrappedValue = current
+    }
+    public mutating func clear() {
+        wrappedValue = Value()
     }
 }
