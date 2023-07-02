@@ -1,7 +1,9 @@
+import Combine
 import SwiftUI
 
 /// A navigator to use when the `NBNavigationStack` is initialized with a `NBNavigationPath` binding or no binding.`
 public typealias PathNavigator = Navigator<AnyHashable>
+public typealias PathAwareNavigator = EquatableNavigator<AnyHashable>
 
 /// An object available via the environment that gives access to the current path.
 /// Supports push and pop operations when `Screen` conforms to `NBScreen`.
@@ -18,4 +20,17 @@ public class Navigator<Screen>: ObservableObject {
   init(_ pathBinding: Binding<[Screen]>) {
     self.pathBinding = pathBinding
   }
+}
+
+public class EquatableNavigator<Screen>: ObservableObject where Screen: Equatable {
+    init(navigator: Navigator<Screen>) {
+        self.navigator = navigator
+    }
+    @MainActor public var navigator: Navigator<Screen> {
+        willSet {
+            if newValue.path != navigator.path {
+                self.objectWillChange.send()
+            }
+        }
+    }
 }

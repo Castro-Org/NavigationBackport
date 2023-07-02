@@ -49,6 +49,7 @@ public struct NBNavigationStack<Root: View, Data: Hashable>: View {
       .environmentObject(pathAppender)
       .environmentObject(destinationBuilder)
       .environmentObject(Navigator(useInternalTypedPath ? $internalTypedPath : $externalTypedPath))
+      .environmentObject(EquatableNavigator(navigator: Navigator(useInternalTypedPath ? $internalTypedPath : $externalTypedPath)))
       .onFirstAppear {
         guard isUsingNavigationView else {
           // Path should already be correct thanks to initialiser.
