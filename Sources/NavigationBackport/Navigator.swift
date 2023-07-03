@@ -36,9 +36,13 @@ public class EquatableNavigator<Screen>: ObservableObject where Screen: Equatabl
 }
 
 
-extension Binding: Equatable where Value == [AnyHashable] {
+extension Binding: Equatable, Hashable where Value == [AnyHashable] {
     public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
         lhs.wrappedValue == rhs.wrappedValue
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue)
     }
     
     public mutating func append(_ element: Value.Element) {
@@ -47,6 +51,6 @@ extension Binding: Equatable where Value == [AnyHashable] {
         wrappedValue = current
     }
     public mutating func clear() {
-        wrappedValue = Value()
+        wrappedValue = []
     }
 }
