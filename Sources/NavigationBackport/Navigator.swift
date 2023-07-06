@@ -56,3 +56,10 @@ extension Binding where Value: RangeReplaceableCollection, Value.Element: Hashab
         wrappedValue = Value()
     }
 }
+
+
+extension NBNavigationPath: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(elements.hashValue)
+    }
+}

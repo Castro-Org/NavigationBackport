@@ -3,7 +3,7 @@ import SwiftUI
 
 /// A type-erased wrapper for an Array of any Hashable types, to be displayed in a `NBNavigationStack`.
 public struct NBNavigationPath: Equatable {
-  var elements: [AnyHashable]
+  public var elements: [AnyHashable]
 
   /// The number of screens in the path.
   public var count: Int { elements.count }
@@ -25,5 +25,9 @@ public struct NBNavigationPath: Equatable {
 
   public mutating func removeLast(_ k: Int = 1) {
     elements.removeLast(k)
+  }
+    
+  public func contains<V: Hashable>(_ element: V) -> Bool {
+    elements.contains(element)
   }
 }
